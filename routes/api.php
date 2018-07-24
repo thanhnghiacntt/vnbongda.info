@@ -17,3 +17,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['namespace' => 'Api', null, 'middleware' => ['jwt.auth']], function () {
+    Route::get('test1', 'HomeController@getInfo');
+});
+
+Route::group(['namespace' => 'Api', null], function () {
+    Route::get('test', 'HomeController@getInfo');
+});
