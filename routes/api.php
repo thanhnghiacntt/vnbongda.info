@@ -22,5 +22,7 @@ Route::group(['namespace' => 'Api', null, 'middleware' => ['jwt.auth']], functio
 });
 
 Route::group(['namespace' => 'Api', null], function () {
+    Route::post('login','UserController@login');
+    Route::post('create-user','UserController@create');
     Route::get('test', 'HomeController@getInfo');
 });
