@@ -41,10 +41,11 @@ class UserController extends BaseController {
      */
     public function login(Request $request){
         try {
+            /*
             $reponse = $this->validateRequest($request, $this->rules(), $this->validationErrorMessages());
             if(!is_null($reponse)){
                 return $reponse;
-            }
+            }*/
             $credentials = $request->all();
             $token = JWTAuth::attempt($credentials);
             if (!$token) {
@@ -52,12 +53,6 @@ class UserController extends BaseController {
             }
             // Get infomation of user
             $auth = Auth::User();
-            if($auth->status == 2){
-                return $this->responseJsonError('user_block', null);
-            }
-            if($auth->status == 0){
-                return $this->responseJsonError('user_inactive', null);
-            }
             $user = $this->userRepository->getProfile($auth->id);
             $user->school_code = $this->settingRepository->getValueOfKey('code');
             $this->updateDateUser($auth->id);

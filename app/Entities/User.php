@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class User extends Authenticatable
 {
+    protected $primaryKey = 'id';
     use TransformableTrait;
     
     use SoftDeletes;
@@ -28,7 +29,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'username', 'email', 'password',
     ];
 
     /**
