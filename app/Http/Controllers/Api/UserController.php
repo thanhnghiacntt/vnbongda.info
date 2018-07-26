@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use JWTAuth;
+use Exception;
 use App\Http\Controllers\BaseController;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use App\Notifications\ValidateMessage;
+use Illuminate\Support\Facades\Log;
+
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -41,28 +45,29 @@ class UserController extends BaseController {
             if(!is_null($reponse)){
                 return $reponse;
             }
-            $credentials = Request::all();
+            $credentials = $request->all();
             $token = JWTAuth::attempt($credentials);
             if (!$token) {
-                return ResponseJsonApiController::responseJsonErrorCode('invalid_credentials', null);
+                return $this->responseJsonError('invalid_credentials', null);
             }
             // Get infomation of user
             $auth = Auth::User();
             if($auth->status == 2){
-                return ResponseJsonApiController::responseJsonErrorCode('user_block', null);
+                return $this->responseJsonError('user_block', null);
             }
             if($auth->status == 0){
-                return ResponseJsonApiController::responseJsonErrorCode('user_inactive', null);
+                return $this->responseJsonError('user_inactive', null);
             }
             $user = $this->userRepository->getProfile($auth->id);
-            $user->token_firebase = $this->createTokenFirebase();
             $user->school_code = $this->settingRepository->getValueOfKey('code');
             $this->updateDateUser($auth->id);
-            return ResponseJsonApiController::responseJson(0, '', ['user' => $user, 'token'=> $token]);
+            return $this->responseJsonSuccess(['user' => $user, 'token'=> $token]);
         } catch (JWTException $e) {
-            return ResponseJsonApiController::responseJsonErrorCode('could_not_create_token', null);
+            Log::error($e);
+            return $this->responseJsonError('could_not_create_token', null);
         } catch (Exception $e) {
-            return ResponseJsonApiController::responseJsonErrorCode('exception', null);
+            Log::error($e);
+            return $this->responseJsonError('exception', null);
         }
     }
     
@@ -115,8 +120,8 @@ class UserController extends BaseController {
      * Rule validate
      */
     protected function rules() {
-        return ['user' => 'required',
-            'pass' => 'required|min:6',];
+        return ['username' => 'required',
+            'password' => 'required|min:6',];
     }
     
     /**
