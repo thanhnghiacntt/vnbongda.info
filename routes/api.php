@@ -18,11 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['namespace' => 'Api', null, 'middleware' => ['jwt.auth']], function () {
-    Route::get('test1', 'HomeController@getInfo');
+    Route::post('change-password', 'UserController@changPassword');
+    Route::post('create-category', 'CategoryController@create');
 });
 
 Route::group(['namespace' => 'Api', null], function () {
     Route::post('login','UserController@login');
     Route::post('create-user','UserController@create');
-    Route::get('test', 'HomeController@getInfo');
 });

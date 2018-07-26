@@ -1,0 +1,46 @@
+{
+  "name": "NextExpress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "babel-polyfill": "^6.23.0",
+    "chart.js": "^1.1.1",
+    "create-react-class": "^15.6.2",
+    "react": "^16.0.0",
+    "react-chartjs": "^0.8.0",
+    "react-color": "^2.10.0",
+    "react-cookie": "^0.4.8",
+    "react-dom": "^16.0.0",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "redux": "^3.5.2",
+    "semantic-ui-css": "^2.2.12",
+    "semantic-ui-react": "^0.75.1",
+    "whatwg-fetch": "^2.0.2"
+  },
+  "devDependencies": {
+    "@types/jquery": "^2.0.40",
+    "@types/jquery.cookie": "^1.4.28",
+    "@types/react": "^16.0.19",
+    "@types/react-dom": "^16.0.2",
+    "@types/react-router": "^4.0.16",
+    "@types/react-router-dom": "^4.2.0",
+    "@types/whatwg-fetch": "0.0.33",
+    "@types/whatwg-streams": "0.0.2",
+    "awesome-typescript-loader": "^3.3.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "source-map-loader": "^0.1.6",
+    "typescript": "^2.6.1",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.4"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --history-api-fallback --port 8080",
+    "build": "webpack -p"
+  },
+  "author": "",
+  "license": "ISC"
+}

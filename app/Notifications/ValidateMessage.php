@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Notifications;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -43,7 +44,7 @@ trait ValidateMessage
     /**
      * Validate request
      * @param Request $request
-     * @return type
+     * @return JsonResponse
      */
     public function validateRequest(Request $request, $rule = null, $errorMessage = null){
         if(is_null($rule)){
@@ -57,11 +58,13 @@ trait ValidateMessage
         $validator = Validator::make($data, $rule, $errorMessage);
         return $this->validateError($validator);
     }
-    
+
     /**
-     * Validate request
-     * @param Request $request
-     * @return type
+     * Validate required
+     * @param $data
+     * @param null $rule
+     * @param null $errorMessage
+     * @return JsonResponse
      */
     public function validateValues($data, $rule = null, $errorMessage = null){
         if(is_null($rule)){
@@ -77,10 +80,8 @@ trait ValidateMessage
     
     /**
      * 
-     * @param type $validator
-     * @param type $rule
-     * @param type $errorMessage
-     * @return type
+     * @param Validator $validator
+     * @return JsonResponse
      */
     public function validateError($validator){
         if ($validator->fails()) {
