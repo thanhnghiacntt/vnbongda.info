@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\BaseController;
-use App\Repositories\UserRepositoryEloquent;
+use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use App\Notifications\ValidateMessage;
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 
 class UserController extends BaseController {
     
+    use ValidateMessage;
     /**
      * User repository
      * @var type 
@@ -20,10 +22,9 @@ class UserController extends BaseController {
     private $userRepository;
 
 
-    public function __construct(\App\Repositories\UserRepositoryEloquent $userRepository)
+    public function __construct(UserRepository $userRepository)
     {
-        $this->$userRepository = $userRepository;
-        dd($userRepository);
+        $this->userRepository = $userRepository;
     }
     
     public function create(){

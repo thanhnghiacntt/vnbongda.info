@@ -2,18 +2,16 @@
 
 namespace App\Repositories;
 
-use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\CategoryPostRepository;
-use App\Entities\CategoryPost;
-use App\Validators\CategoryPostValidator;
+use Prettus\Repository\Eloquent\BaseRepository;
+use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Class CategoryPostRepositoryEloquent.
+ * Class UserRepositoryEloquent.
  *
  * @package namespace App\Repositories;
  */
-class CategoryPostRepositoryEloquent extends BaseRepository implements CategoryPostRepository
+class MyBaseRepository extends BaseRepository implements RepositoryInterface
 {
     /**
      * Specify Model class name
@@ -22,10 +20,8 @@ class CategoryPostRepositoryEloquent extends BaseRepository implements CategoryP
      */
     public function model()
     {
-        return CategoryPost::class;
+        return [];
     }
-
-    
 
     /**
      * Boot up the repository, pushing criteria

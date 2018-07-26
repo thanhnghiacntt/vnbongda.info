@@ -55,7 +55,7 @@ trait ValidateMessage
         //check validator
         $data = $request->all();
         $validator = Validator::make($data, $rule, $errorMessage);
-        return $this->validate($validator, $rule, $errorMessage);
+        return $this->validateError($validator);
     }
     
     /**
@@ -72,7 +72,7 @@ trait ValidateMessage
         }
         //check validator
         $validator = Validator::make($data, $rule, $errorMessage);
-        return $this->validate($validator, $rule, $errorMessage);
+        return $this->validateError($validator);
     }
     
     /**
@@ -82,13 +82,7 @@ trait ValidateMessage
      * @param type $errorMessage
      * @return type
      */
-    private function validate($validator, $rule = null, $errorMessage = null){
-        if(is_null($rule)){
-            $rule = $this->rules();
-        }
-        if(is_null($errorMessage)){
-            $errorMessage = $this->validationErrorMessages();
-        }
+    public function validateError($validator){
         if ($validator->fails()) {
             $messages = $validator->messages();
             foreach ($messages->all() as $error) {

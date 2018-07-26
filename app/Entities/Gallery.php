@@ -10,7 +10,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  *
  * @package namespace App\Entities;
  */
-class Gallery extends BaseModel implements Transformable
+class Gallery extends MyBaseModel implements Transformable
 {
     use TransformableTrait;
 

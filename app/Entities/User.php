@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @package namespace App\Entities;
  */
-class User extends BaseModel implements Transformable
+class User extends MyBaseModel implements Transformable
 {
     use TransformableTrait;
     

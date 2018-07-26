@@ -34,10 +34,9 @@ class RepositoriesServiceProvider extends ServiceProvider
 
         foreach ($models as $model) {
             $this->app->bind(
-               "App\\Repositories\\{$model}RepositoryEloquent",
-               "App\\Repositories\\{$model}Repository"
+               "\\App\\Repositories\\{$model}Repository"
             );
         }
-        $this->app->bind(App\Repositories\UserRepository::class, \App\Repositories\UserRepositoryEloquent::class);
+        //$this->app->bind("App\Repositories\UserRepositoryEloquent");
     }
 }

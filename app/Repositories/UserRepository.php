@@ -2,14 +2,22 @@
 
 namespace App\Repositories;
 
-use Prettus\Repository\Contracts\RepositoryInterface;
+use App\Entities\User;
 
 /**
  * Interface UserRepository.
  *
  * @package namespace App\Repositories;
  */
-interface UserRepository extends RepositoryInterface
+class UserRepository extends MyBaseRepository
 {
-    //
+     /**
+     * Specify Model class name
+     *
+     * @return string
+     */
+    public function model()
+    {
+        return User::class;
+    }
 }

@@ -10,7 +10,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  *
  * @package namespace App\Entities;
  */
-class CategoryPost extends BaseModel implements Transformable
+class CategoryPost extends MyBaseModel implements Transformable
 {
     use TransformableTrait;
 
