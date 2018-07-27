@@ -6,5 +6,6 @@
  * and open the template in the editor.
  */
 return [
+    "invalid_credentials" => "Tên đăng nhập hoặc mật khẩu không đúng"
     ];
 

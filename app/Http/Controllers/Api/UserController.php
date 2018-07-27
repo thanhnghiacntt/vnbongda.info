@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use JWTAuth;
 use Exception;
+use DateTime;
 use App\Http\Controllers\BaseController;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use App\Notifications\ValidateMessage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -31,8 +33,35 @@ class UserController extends BaseController {
         $this->userRepository = $userRepository;
     }
     
-    public function create(){
-        return "Helloword";
+    /**
+     * Create user
+     * @param Request $request
+     * @return type
+     */
+    public function create(Request $request){
+        try {
+            $reponse = $this->validateRequest($request, $this->ruleCreate(), $this->validationErrorMessages());
+            if(!is_null($reponse)){
+                return $reponse;
+            }
+            $credentials = $request->all();
+            if($this->userRepository->checkExistEmail($credentials['email'])){
+                return $this->responseJsonError('email_exist', null);
+            }
+            if($this->userRepository->checkExistUsername($credentials['username'])){
+                return $this->responseJsonError('username_exist', null);
+            }
+            $attribute = $this->createdDetault($credentials);
+            $attribute['password'] = bcrypt($credentials['password']);
+            $user = $this->userRepository->create($attribute);
+            return $this->responseJsonSuccess(['user' => $user]);
+        } catch (JWTException $e) {
+            Log::error($e);
+            return $this->responseJsonError('could_not_create_token', null);
+        } catch (Exception $e) {
+            Log::error($e);
+            return $this->responseJsonError('exception', null);
+        }
     }
     
     /**
@@ -41,11 +70,10 @@ class UserController extends BaseController {
      */
     public function login(Request $request){
         try {
-            /*
             $reponse = $this->validateRequest($request, $this->rules(), $this->validationErrorMessages());
             if(!is_null($reponse)){
                 return $reponse;
-            }*/
+            }
             $credentials = $request->all();
             $token = JWTAuth::attempt($credentials);
             if (!$token) {
@@ -54,7 +82,6 @@ class UserController extends BaseController {
             // Get infomation of user
             $auth = Auth::User();
             $user = $this->userRepository->getProfile($auth->id);
-            $user->school_code = $this->settingRepository->getValueOfKey('code');
             $this->updateDateUser($auth->id);
             return $this->responseJsonSuccess(['user' => $user, 'token'=> $token]);
         } catch (JWTException $e) {
@@ -92,8 +119,8 @@ class UserController extends BaseController {
             $user->save();
             $credentials['password'] = $newPassword;
             $token = JWTAuth::attempt($credentials);
-            $user = $this->userRepository->getProfile($user->id);
-            return ResponseJsonApiController::responseJson(0, '', ['user' => $user, 'token'=> $token]);
+            $rs = $this->userRepository->getProfile($user->id);
+            return ResponseJsonApiController::responseJson(0, '', ['user' => $rs, 'token'=> $token]);
         } catch (JWTException $e) {
             return ResponseJsonApiController::responseJsonErrorCode('could_not_create_token', null);
         } catch (Exception $e) {
@@ -119,21 +146,30 @@ class UserController extends BaseController {
             'password' => 'required|min:6',];
     }
     
-    /**
+    protected function ruleCreate(){
+        return ['username' => 'required',
+            'password' => 'required|min:6',
+            'email' => 'required|email',
+        ];
+    }
+
+        /**
      * Error message
      * @return type
      */
     protected function validationErrorMessages() {
         return [
-            'user.required'             => 'username_empty',
-            'pass.required'             => 'password_empty',
-            'pass.min'                  => 'password_min_6',
+            'password.required'         => 'username_empty',
+            'password.required'         => 'password_empty',
+            'password.min'              => 'password_min_6',
             'old_password.required'     => 'old_password_empty',
             'new_password.required'     => 'new_password_empty',
             'confirm_password.required' => 'confirm_password_empty',
             'old_password.min'          => 'old_password_min_6',
             'new_password.min'          => 'new_password_min_6',
             'confirm_password.min'      => 'confirm_password_min_6',
+            'email.required'            => 'email_empty',
+            'email.email'               => 'email_format'
         ];
     }
     

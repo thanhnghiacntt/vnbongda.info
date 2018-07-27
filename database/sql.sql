@@ -7,6 +7,7 @@ create table tbl_user(
 	avatar varchar(255) null comment 'Avatar',
 	username varchar(50) not null comment 'Tên đăng nhập',
 	password varchar(32) not null comment 'Mật khẩu đăng nhập',
+	last_visited date null comment 'Ngày đăng nhập lần cuối',
 	deleted_at date null comment 'Đã xóa hay chưa',
 	created_by int comment 'Tạo bởi user id nào',
 	updated_by int comment 'Cập nhật bởi user id nào',

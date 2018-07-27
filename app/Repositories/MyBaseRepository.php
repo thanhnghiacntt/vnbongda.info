@@ -31,4 +31,27 @@ class MyBaseRepository extends BaseRepository implements RepositoryInterface
         $this->pushCriteria(app(RequestCriteria::class));
     }
     
+    /**
+     * Find without fail
+     * @param type $id
+     * @param type $columns
+     * @return type
+     */
+    public function findWithoutFail($id, $columns = null){
+        try{
+            return $this->find($id, $columns);
+        } catch (Exception $ex) {
+            return null;
+        }
+    }
+    
+    
+    /**
+     * Count
+     * @param type $condition
+     * @return type
+     */
+    public function count($condition){
+        return $this->model->where($condition)->count();
+    }
 }
