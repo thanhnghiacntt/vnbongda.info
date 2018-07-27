@@ -41,4 +41,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function getAvatarAttribute($value) {
+        if($value != ""){
+            return asset(config("common.path_avatar") . $value);
+        }else{
+            return asset(config("common.path_avatar_default"));
+        }
+    }
 }

@@ -10,6 +10,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use App\Notifications\ValidateMessage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 
 /* 
@@ -28,8 +29,13 @@ class UserController extends BaseController {
     private $userRepository;
 
 
+    /**
+     * Constructor
+     * @param UserRepository $userRepository
+     */
     public function __construct(UserRepository $userRepository)
     {
+        $this->repository = $userRepository;
         $this->userRepository = $userRepository;
     }
     
@@ -108,23 +114,25 @@ class UserController extends BaseController {
             $newPassword = Input::get('new_password');
             $confPassword = Input::get('confirm_password');
             if(strcmp($newPassword, $confPassword) != 0){
-                return ResponseJsonApiController::responseJsonErrorCode('password_confirmation_does_not_match', null);
+                return $this->responseJsonError('password_confirmation_does_not_match', null);
             }
             $user = JWTAuth::parseToken()->authenticate();
             $credentials = ['username'=>$user->username, 'password'=>$password];
             if (!JWTAuth::attempt($credentials)) {
-                return ResponseJsonApiController::responseJsonErrorCode('old_password_invalid', null);
+                return $this->responseJsonError('old_password_invalid', null);
             }
             $user->password = bcrypt($newPassword);
             $user->save();
             $credentials['password'] = $newPassword;
             $token = JWTAuth::attempt($credentials);
             $rs = $this->userRepository->getProfile($user->id);
-            return ResponseJsonApiController::responseJson(0, '', ['user' => $rs, 'token'=> $token]);
+            return $this->responseJsonSuccess(['user' => $rs, 'token'=> $token]);
         } catch (JWTException $e) {
-            return ResponseJsonApiController::responseJsonErrorCode('could_not_create_token', null);
+            Log::error($e);
+            return $this->responseJsonError('could_not_create_token', null);
         } catch (Exception $e) {
-            return ResponseJsonApiController::responseJsonErrorCode('exception', null);
+            Log::error($e);
+            return $this->responseJsonError('exception', null);
         }
     }
         
@@ -159,7 +167,7 @@ class UserController extends BaseController {
      */
     protected function validationErrorMessages() {
         return [
-            'password.required'         => 'username_empty',
+            'username.required'         => 'username_empty',
             'password.required'         => 'password_empty',
             'password.min'              => 'password_min_6',
             'old_password.required'     => 'old_password_empty',

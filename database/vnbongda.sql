@@ -1,0 +1,108 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : localhost
+Source Server Version : 50505
+Source Host           : localhost:3306
+Source Database       : vnbongda
+
+Target Server Type    : MYSQL
+Target Server Version : 50505
+File Encoding         : 65001
+
+Date: 2018-07-27 17:52:36
+*/
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for tbl_category
+-- ----------------------------
+DROP TABLE IF EXISTS `tbl_category`;
+CREATE TABLE `tbl_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Khóa chính',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Tên danh mục',
+  `slug` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Slug',
+  `parent_id` int(11) DEFAULT NULL COMMENT 'Id cha',
+  `deleted_at` date DEFAULT NULL COMMENT 'Đã xóa hay chưa',
+  `created_by` int(11) DEFAULT NULL COMMENT 'Tạo bởi user id nào',
+  `updated_by` int(11) DEFAULT NULL COMMENT 'Cập nhật bởi user id nào',
+  `created_at` date DEFAULT NULL COMMENT 'Tạo vào ngày nào',
+  `updated_at` date DEFAULT NULL COMMENT 'Cập nhật vào ngày nào',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of tbl_category
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tbl_gallery
+-- ----------------------------
+DROP TABLE IF EXISTS `tbl_gallery`;
+CREATE TABLE `tbl_gallery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Khóa chính',
+  `image` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Url image tương đối: VD /image/test.png',
+  `title` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Title của image',
+  `deleted_at` date DEFAULT NULL COMMENT 'Đã xóa hay chưa',
+  `created_by` int(11) DEFAULT NULL COMMENT 'Tạo bởi user id nào',
+  `updated_by` int(11) DEFAULT NULL COMMENT 'Cập nhật bởi user id nào',
+  `created_at` date DEFAULT NULL COMMENT 'Tạo vào ngày nào',
+  `updated_at` date DEFAULT NULL COMMENT 'Cập nhật vào ngày nào',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of tbl_gallery
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tbl_post
+-- ----------------------------
+DROP TABLE IF EXISTS `tbl_post`;
+CREATE TABLE `tbl_post` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Khóa chính',
+  `title` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Tiêu đề bài viết',
+  `content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT 'Nội dung bài viết',
+  `id_image` int(11) DEFAULT NULL COMMENT 'Id của hình ảnh đại điện',
+  `deleted_at` date DEFAULT NULL COMMENT 'Đã xóa hay chưa',
+  `created_by` int(11) DEFAULT NULL COMMENT 'Tạo bởi user id nào',
+  `updated_by` int(11) DEFAULT NULL COMMENT 'Cập nhật bởi user id nào',
+  `created_at` date DEFAULT NULL COMMENT 'Tạo vào ngày nào',
+  `updated_at` date DEFAULT NULL COMMENT 'Cập nhật vào ngày nào',
+  PRIMARY KEY (`id`),
+  KEY `id_image` (`id_image`),
+  CONSTRAINT `tbl_post_ibfk_1` FOREIGN KEY (`id_image`) REFERENCES `tbl_gallery` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of tbl_post
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for tbl_user
+-- ----------------------------
+DROP TABLE IF EXISTS `tbl_user`;
+CREATE TABLE `tbl_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Khóa chính',
+  `first_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Họ',
+  `last_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Tên',
+  `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Email',
+  `phone` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Số điện thoại',
+  `avatar` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Avatar',
+  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Tên đăng nhập',
+  `password` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Mật khẩu đăng nhập',
+  `last_visited` date DEFAULT NULL,
+  `deleted_at` date DEFAULT NULL COMMENT 'Đã xóa hay chưa',
+  `created_by` int(11) DEFAULT NULL COMMENT 'Tạo bởi user id nào',
+  `updated_by` int(11) DEFAULT NULL COMMENT 'Cập nhật bởi user id nào',
+  `created_at` date DEFAULT NULL COMMENT 'Tạo vào ngày nào',
+  `updated_at` date DEFAULT NULL COMMENT 'Cập nhật vào ngày nào',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of tbl_user
+-- ----------------------------
+INSERT INTO `tbl_user` VALUES ('1', 'Nguyễn Thành', 'Nghĩa', 'thanhnghiacntt@gmail.com', '0975335587', 'image/adfsadfsdf.jpg', 'thanhnghiacntt', '$2y$10$ONBSiC6aZlF0ZmxaMUl67OsooHlDOwydZ6uGPmwpNwsvgomjB45Zm', '2018-07-27', null, '1', '1', '2018-07-26', '2018-07-27');
+INSERT INTO `tbl_user` VALUES ('4', 'Nguyễn Thành', 'Nghĩa', 'thanhnghiacntt@yahoo.com.vn', '0975335587', 'http://google.com.vn/abcd.png', 'tieutanduong', '$2y$10$ONBSiC6aZlF0ZmxaMUl67OsooHlDOwydZ6uGPmwpNwsvgomjB45Zm', null, null, null, null, '2018-07-27', '2018-07-27');
