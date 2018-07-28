@@ -18,7 +18,7 @@ use JWTAuth;
 use Exception;
 use DateTime;
 use App\Http\Controllers\BaseController;
-use App\Repositories\UserRepository;
+use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
 use App\Notifications\ValidateMessage;
 use Illuminate\Support\Facades\Log;
@@ -35,13 +35,48 @@ class CategoryController extends BaseController {
      */
     private $categoryRepository;
 
-    public function __construct(UserRepository $categoryRepository)
+    public function __construct(CategoryRepository $categoryRepository)
     {
         $this->repository = $categoryRepository;
-        $this->$categoryRepository = $categoryRepository;
+        $this->categoryRepository = $categoryRepository;
     }
     
-    public function create(){
-        
+    /**
+     * Create
+     */
+    public function create(Request $request){
+        try {
+            $reponse = $this->validateRequest($request, $this->ruleCreate() , $this->validationErrorMessages());
+            if(!is_null($reponse)){
+                return $reponse;
+            }
+            $in = $request->all();
+            $attribute = $this->createdDetault($in);
+            $category = $this->categoryRepository->create($attribute);
+            return $this->responseJsonSuccess(['category' => $category]);
+        } catch (Exception $e) {
+            Log::error($e);
+            return $this->responseJsonError('exception', null);
+        }
+    }
+    
+    /**
+     * Role create
+     */
+    protected function ruleCreate(){
+        return ['slug' => 'required',
+            'name' => 'required'
+        ];
+    }
+    
+    /**
+     * Error message
+     * @return type
+     */
+    protected function validationErrorMessages() {
+        return [
+            'slug.required'         => 'slug_empty',
+            'name.required'         => 'name_empty',
+        ];
     }
 }

@@ -58,7 +58,7 @@ class UserController extends BaseController {
                 return $this->responseJsonError('username_exist', null);
             }
             $attribute = $this->createdDetault($credentials);
-            $attribute['password'] = bcrypt($credentials['password']);
+            $attribute['password'] = bcrypt($credentials['password']);     
             $user = $this->userRepository->create($attribute);
             return $this->responseJsonSuccess(['user' => $user]);
         } catch (JWTException $e) {

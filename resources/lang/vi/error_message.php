@@ -25,6 +25,8 @@ return [
     "username_exist" => "Tên đăng nhập đã tồn tại",
     "email_exist" => "Email đã tồn tại",
     "password_confirmation_does_not_match" => "Mật khẩu mới và mật khẩu xác nhận không đúng",
-    "success" => "Thành công"
+    "success" => "Thành công",
+    "slug_empty" => "Slug bị trống",
+    "name_empty" => "Tên bị trống"
     ];
 

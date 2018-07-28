@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Input;
 use App\Repositories\MyBaseRepository;
 use DateTime;
+use JWTAuth;
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -25,6 +26,7 @@ class BaseController extends Controller
     public function __construct(MyBaseRepository $repository) {
         $this->repository = $repository;
     }
+    
     
     public function create(Request $request){
         try {
@@ -60,23 +62,21 @@ class BaseController extends Controller
         
     }
     
+    
     /**
      * Created default
      * @param type $entity
      * @return DateTime
      */
     protected function createdDetault($entity){
-        $auth = Auth::User();
+        $auth = JWTAuth::parseToken()->authenticate();
         if($auth != null){
-            $new = [
-                'created_by' => $auth->id,
-                'updated_by' => $auth->id,
-                'created_at' => new DateTime(),
-                'updated_at' => new DateTime()
-            ];
-            array_push($entity, $new);
+            $entity['created_by'] = $auth->id;
+            $entity['updated_by'] = $auth->id;
+            $entity['created_at'] = new DateTime();
+            $entity['updated_at'] = new DateTime();
+            $entity['id'] = null;
         }
-        
         return $entity;
     }
     
@@ -86,7 +86,7 @@ class BaseController extends Controller
      * @return DateTime
      */
     protected function updatedDetault($entity){
-        $auth = Auth::User();
+        $auth = JWTAuth::parseToken()->authenticate();
         if($auth != null){
             $new = [
                 'updated_by' => $auth->id,

@@ -30,6 +30,9 @@ class RepositoriesServiceProvider extends ServiceProvider
         $models = [
             'User',
             'Category',
+            'Gallery',
+            'Post',
+            'CategoryPost'
         ];
 
         foreach ($models as $model) {
