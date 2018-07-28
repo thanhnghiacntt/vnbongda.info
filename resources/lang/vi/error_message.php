@@ -24,6 +24,7 @@ return [
     "could_not_create_token" => "Không thể tạo token",
     "username_exist" => "Tên đăng nhập đã tồn tại",
     "email_exist" => "Email đã tồn tại",
-    "password_confirmation_does_not_match" => "Mật khẩu mới và mật khẩu xác nhận không đúng"
+    "password_confirmation_does_not_match" => "Mật khẩu mới và mật khẩu xác nhận không đúng",
+    "success" => "Thành công"
     ];
 
