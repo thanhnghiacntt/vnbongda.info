@@ -32,28 +32,28 @@ class BaseController extends Controller
         try {
             $credentials = $request->all();
             $attribute = $this->createdDetault($credentials);
-            $entity = $repository->create($attribute);
+            $entity = $this->repository->create($attribute);
             return $this->responseJsonSuccess(['entity' => $entity]);
         } catch (Exception $ex) {
-            Log::error($e);
+            Log::error($ex);
             return $this->responseJsonError('exception', null);
         }
     }
     
-    public function update(){
+    public function update(Request $request){
         
     }
     
-    public function delete(Request $request){
+    public function delete(){
         try {
             $id = Input::get('id');
-            $entity = $this->$repository->findWithoutFail($id);
+            $entity = $this->repository->findWithoutFail($id);
             $entity->deleted_at = new DateTime();
             $attribute = $this->updatedDetault($entity);
             $attribute->save();
             return $this->responseJsonSuccess(['entity' => $attribute]);
         } catch (Exception $ex) {
-            Log::error($e);
+            Log::error($ex);
             return $this->responseJsonError('exception', null);
         }
     }

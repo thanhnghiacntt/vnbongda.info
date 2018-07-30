@@ -35,7 +35,7 @@ class UserController extends BaseController {
      */
     public function __construct(UserRepository $userRepository)
     {
-        $this->repository = $userRepository;
+        parent::__construct($userRepository);
         $this->userRepository = $userRepository;
     }
     
@@ -71,6 +71,34 @@ class UserController extends BaseController {
     }
     
     /**
+     * 
+     * @param Request $request
+     * @return type
+     */
+    public function update(Request $request){
+        try {
+            $reponse = $this->validateRequest($request, $this->ruleUpdate(), $this->validationErrorMessages());
+            if(!is_null($reponse)){
+                return $reponse;
+            }
+            $credentials = $request->all();
+            $temp = $this->userRepository->findWithoutFail($credentials['id']);
+            if(is_null($temp)){
+                return $this->responseJsonError('id_incorrect', null);
+            }
+            $user = $this->setUser($temp, $credentials);
+            $user->save();
+            return $this->responseJsonSuccess(['user' => $user]);
+        } catch (JWTException $e) {
+            Log::error($e);
+            return $this->responseJsonError('could_not_create_token', null);
+        } catch (Exception $e) {
+            Log::error($e);
+            return $this->responseJsonError('exception', null);
+        }
+    }
+
+     /**
      * Login which input user, pass, type from form.
      * @return type User
      */
@@ -154,10 +182,24 @@ class UserController extends BaseController {
             'password' => 'required|min:6',];
     }
     
+    /**
+     * 
+     * @return type
+     */
     protected function ruleCreate(){
         return ['username' => 'required',
             'password' => 'required|min:6',
             'email' => 'required|email',
+        ];
+    }
+    
+    /**
+     * 
+     * @return type
+     */
+    protected function ruleUpdate(){
+        return [
+            'id' => 'required'
         ];
     }
 
@@ -177,7 +219,8 @@ class UserController extends BaseController {
             'new_password.min'          => 'new_password_min_6',
             'confirm_password.min'      => 'confirm_password_min_6',
             'email.required'            => 'email_empty',
-            'email.email'               => 'email_format'
+            'email.email'               => 'email_format',
+            'id.required'               => 'id_empty'
         ];
     }
     
@@ -191,6 +234,29 @@ class UserController extends BaseController {
             $user->last_visited = new DateTime();
             $user->save();
         }
+    }
+    
+    /**
+     * Set user
+     * @param type $user
+     * @param type $credentials
+     * @return type
+     */
+    private function setUser($user, $credentials) {
+        if(array_key_exists('first_name', $credentials)){
+            $user->first_name = $credentials['first_name'];
+        }
+        if(array_key_exists('last_name', $credentials)){
+            $user->last_name = $credentials['last_name'];
+        }
+        if(array_key_exists('phone', $credentials) && $credentials->phone != null){
+            $user->phone = $credentials['phone'];
+        }
+        if(array_key_exists('avatar', $credentials) && $credentials->avatar != null){
+            $user->avatar = $credentials['avatar'];
+        }
+        $user->last_visited = new DateTime();
+        return $user;
     }
     
 }

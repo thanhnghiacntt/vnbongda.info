@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'Api', null, 'middleware' => ['jwt.auth']], function () {
     Route::post('change-password', 'UserController@changPassword');
+    Route::post('update-user','UserController@update');
     Route::post('create-category', 'CategoryController@create');
 });
 

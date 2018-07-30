@@ -27,6 +27,14 @@ return [
     "password_confirmation_does_not_match" => "Mật khẩu mới và mật khẩu xác nhận không đúng",
     "success" => "Thành công",
     "slug_empty" => "Slug bị trống",
-    "name_empty" => "Tên bị trống"
+    "name_empty" => "Tên bị trống",
+    "id_empty" => "Id bị trống",
+    "id_incorrect" => "Id không đúng",
+    "token_not_provided" => "Token không được cung cấp",
+    "token_invalid" => "Token không có giá trị",
+    "url_not_found" => "Url không tìm thấy",
+    "permission" => "Không được phép truy cập",
+    "error_exception" => "Lỗi hệ thống",
+    "method_not_allowed" => "Phương thức không được phép truy cập"
     ];
 
