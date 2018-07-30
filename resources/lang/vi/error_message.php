@@ -27,6 +27,8 @@ return [
     "password_confirmation_does_not_match" => "Mật khẩu mới và mật khẩu xác nhận không đúng",
     "success" => "Thành công",
     "slug_empty" => "Slug bị trống",
-    "name_empty" => "Tên bị trống"
+    "name_empty" => "Tên bị trống",
+    "slug_exist" => "Slug đã tồn tại",
+    "name_exist" => "Tên đã tồn tại"
     ];
 

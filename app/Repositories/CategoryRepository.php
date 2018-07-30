@@ -20,4 +20,13 @@ class CategoryRepository extends MyBaseRepository
     {
         return Category::class;
     }
+    
+    public function checkExistSlug($slug) {
+        return $this->count(['slug' => $slug]) > 0;
+    }
+    
+    public function checkExistName($name) {
+        return $this->count(['name' => $name]) > 0;
+        ;
+    }
 }

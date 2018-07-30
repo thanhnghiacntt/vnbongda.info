@@ -42,7 +42,7 @@ class CategoryController extends BaseController {
     }
     
     /**
-     * Create
+     * Created category
      */
     public function create(Request $request){
         try {
@@ -51,9 +51,24 @@ class CategoryController extends BaseController {
                 return $reponse;
             }
             $in = $request->all();
+            if ($this->categoryRepository->checkExistSlug($in['slug'])) {
+                return $this->responseJsonError('slug_exist');
+            }
+            if ($this->categoryRepository->checkExistName($in['name'])) {
+                return $this->responseJsonError('name_exist');
+            }
             $attribute = $this->createdDetault($in);
             $category = $this->categoryRepository->create($attribute);
             return $this->responseJsonSuccess(['category' => $category]);
+        } catch (Exception $e) {
+            Log::error($e);
+            return $this->responseJsonError('exception', null);
+        }
+    }
+    
+    public function update(Request $request){
+        try {
+            
         } catch (Exception $e) {
             Log::error($e);
             return $this->responseJsonError('exception', null);
