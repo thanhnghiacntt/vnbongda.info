@@ -37,7 +37,7 @@ class CategoryController extends BaseController {
 
     public function __construct(CategoryRepository $categoryRepository)
     {
-        $this->repository = $categoryRepository;
+        parent::__construct($categoryRepository);
         $this->categoryRepository = $categoryRepository;
     }
     

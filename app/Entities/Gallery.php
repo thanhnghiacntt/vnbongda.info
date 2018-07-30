@@ -12,13 +12,22 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class Gallery extends MyBaseModel implements Transformable
 {
+    protected $primaryKey = 'id';
     use TransformableTrait;
-
+    
+    use SoftDeletes;
+    
+    public $table = 'tbl_gallery';
+    
+    use Notifiable;
+    
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'image', 'title', 'created_by', 'updated_by'
+    ];
 
 }

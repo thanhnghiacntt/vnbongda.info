@@ -29,6 +29,15 @@ return [
     "slug_empty" => "Slug bị trống",
     "name_empty" => "Tên bị trống",
     "slug_exist" => "Slug đã tồn tại",
-    "name_exist" => "Tên đã tồn tại"
+    "name_exist" => "Tên đã tồn tại",
+    "id_empty" => "Id bị trống",
+    "id_incorrect" => "Id không đúng",
+    "token_not_provided" => "Token không được cung cấp",
+    "token_invalid" => "Token không có giá trị",
+    "url_not_found" => "Url không tìm thấy",
+    "permission" => "Không được phép truy cập",
+    "error_exception" => "Lỗi hệ thống",
+    "method_not_allowed" => "Phương thức không được phép truy cập",
+    "token_expired" => "Token đã hết hạn"
     ];
 

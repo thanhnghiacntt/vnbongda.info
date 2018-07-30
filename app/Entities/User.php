@@ -38,7 +38,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'last_visited', 'deleted_at', 'created_by', 'updated_by', 'created_at', 'updated_at'
     ];
 
     public function getAvatarAttribute($value) {
