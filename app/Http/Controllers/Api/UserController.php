@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Entities\User;
+use Illuminate\Http\JsonResponse;
 use JWTAuth;
 use Exception;
 use DateTime;
@@ -24,7 +26,7 @@ class UserController extends BaseController {
     use ValidateMessage;
     /**
      * User repository
-     * @var type 
+     * @var UserRepository
      */
     private $userRepository;
 
@@ -42,13 +44,13 @@ class UserController extends BaseController {
     /**
      * Create user
      * @param Request $request
-     * @return type
+     * @return JsonResponse
      */
     public function create(Request $request){
         try {
-            $reponse = $this->validateRequest($request, $this->ruleCreate(), $this->validationErrorMessages());
-            if(!is_null($reponse)){
-                return $reponse;
+            $response = $this->validateRequest($request, $this->ruleCreate(), $this->validationErrorMessages());
+            if(!is_null($response)){
+                return $response;
             }
             $credentials = $request->all();
             if($this->userRepository->checkExistEmail($credentials['email'])){
@@ -73,13 +75,13 @@ class UserController extends BaseController {
     /**
      * 
      * @param Request $request
-     * @return type
+     * @return JsonResponse
      */
     public function update(Request $request){
         try {
-            $reponse = $this->validateRequest($request, $this->ruleUpdate(), $this->validationErrorMessages());
-            if(!is_null($reponse)){
-                return $reponse;
+            $response = $this->validateRequest($request, $this->ruleUpdate(), $this->validationErrorMessages());
+            if(!is_null($response)){
+                return $response;
             }
             $credentials = $request->all();
             $temp = $this->userRepository->findWithoutFail($credentials['id']);
@@ -100,13 +102,13 @@ class UserController extends BaseController {
 
      /**
      * Login which input user, pass, type from form.
-     * @return type User
+     * @return JsonResponse
      */
     public function login(Request $request){
         try {
-            $reponse = $this->validateRequest($request, $this->rules(), $this->validationErrorMessages());
-            if(!is_null($reponse)){
-                return $reponse;
+            $response = $this->validateRequest($request, $this->rules(), $this->validationErrorMessages());
+            if(!is_null($response)){
+                return $response;
             }
             $credentials = $request->all();
             $token = JWTAuth::attempt($credentials);
@@ -126,16 +128,17 @@ class UserController extends BaseController {
             return $this->responseJsonError('exception', null);
         }
     }
-    
+
     /**
-     * Change password of user
+     * Change password user
      * @param Request $request
+     * @return JsonResponse
      */
     public function changPassword(Request $request){
          try {
-            $reponse = $this->validateRequest($request, $this->rulesChangePassword() , $this->validationErrorMessages());
-            if(!is_null($reponse)){
-                return $reponse;
+             $response = $this->validateRequest($request, $this->rulesChangePassword() , $this->validationErrorMessages());
+            if(!is_null($response)){
+                return $response;
             }
             // Get information from request
             $password = Input::get('old_password');
@@ -184,7 +187,7 @@ class UserController extends BaseController {
     
     /**
      * 
-     * @return type
+     * @return array
      */
     protected function ruleCreate(){
         return ['username' => 'required',
@@ -195,7 +198,7 @@ class UserController extends BaseController {
     
     /**
      * 
-     * @return type
+     * @return array
      */
     protected function ruleUpdate(){
         return [
@@ -205,7 +208,7 @@ class UserController extends BaseController {
 
         /**
      * Error message
-     * @return type
+     * @return array
      */
     protected function validationErrorMessages() {
         return [
@@ -226,7 +229,7 @@ class UserController extends BaseController {
     
     /**
      * Update user
-     * @param type $id
+     * @param string $id
      */
     private function updateDateUser($id){
         $user = $this->userRepository->findWithoutFail($id);
@@ -238,9 +241,9 @@ class UserController extends BaseController {
     
     /**
      * Set user
-     * @param type $user
-     * @param type $credentials
-     * @return type
+     * @param User $user
+     * @param User $credentials
+     * @return User
      */
     private function setUser($user, $credentials) {
         if(array_key_exists('first_name', $credentials)){

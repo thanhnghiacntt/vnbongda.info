@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Entities\MyBaseModel;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Input;
 use App\Repositories\MyBaseRepository;
 use App\Notifications\ValidateMessage;
 use DateTime;
+use Exception;
 use JWTAuth;
 
 /* 
@@ -29,8 +31,13 @@ class BaseController extends Controller
     public function __construct(MyBaseRepository $repository) {
         $this->repository = $repository;
     }
-    
-    
+
+
+    /**
+     * Create
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function create(Request $request){
         try {
             $credentials = $request->all();
@@ -43,11 +50,16 @@ class BaseController extends Controller
         }
     }
 
+    /**
+     * Delete
+     * @param Request $request
+     * @return \App\Notifications\type|JsonResponse
+     */
     public function delete(Request $request){
         try {
-            $reponse = $this->validateRequest($request, $this->ruleDelete() , $this->validationErrorMessages());
-            if(!is_null($reponse)){
-                return $reponse;
+            $response = $this->validateRequest($request, $this->ruleDelete() , $this->validationErrorMessages());
+            if(!is_null($response)){
+                return $response;
             }
             $id = Input::get('id');
             $entity = $this->repository->findWithoutFail($id);
@@ -66,8 +78,7 @@ class BaseController extends Controller
     
     /**
      * List record
-     * @param Request $request
-     * @return type
+     * @return JsonResponse
      */
     public function listRecord(){
         try {
@@ -84,8 +95,8 @@ class BaseController extends Controller
     
     /**
      * Created default
-     * @param type $entity
-     * @return DateTime
+     * @param MyBaseModel $entity
+     * @return MyBaseModel
      */
     protected function createdDetault($entity){
         $auth = JWTAuth::parseToken()->authenticate();
@@ -101,8 +112,8 @@ class BaseController extends Controller
     
     /**
      * Update default
-     * @param type $entity
-     * @return DateTime
+     * @param MyBaseModel $entity
+     * @return MyBaseModel
      */
     protected function updatedDetault($entity){
         $auth = JWTAuth::parseToken()->authenticate();
@@ -118,10 +129,10 @@ class BaseController extends Controller
 
     /**
      * Return response json
-     * @param type $code
-     * @param type $message
-     * @param type $data
-     * @return type
+     * @param string $code
+     * @param string $message
+     * @param array $data
+     * @return JsonResponse
      */
     protected function responseJson($code, $message = null, $data = array()) {
         return response()->json([
@@ -133,9 +144,9 @@ class BaseController extends Controller
     
     /**
      * 
-     * @param type $code
-     * @param type $data
-     * @return type
+     * @param string $code
+     * @param array $data
+     * @return JsonResponse
      */
     protected function responseJsonError($code, $data = array()) {
         $message = trans("error_message." . $code);
@@ -144,9 +155,8 @@ class BaseController extends Controller
     
     /**
      * Define description from error code.
-     * @param type $errorDesc
-     * @param type $data
-     * @return type
+     * @param array $data
+     * @return JsonResponse
      */
     protected function responseJsonSuccess($data = array()) {
         $code = "success";
@@ -156,7 +166,7 @@ class BaseController extends Controller
     
     /**
      * 
-     * @return type
+     * @return array
      */
     protected function ruleList(){
         return [
@@ -167,7 +177,7 @@ class BaseController extends Controller
     
     /**
      * 
-     * @return type
+     * @return array
      */
     protected function ruleDelete(){
         return [
@@ -177,7 +187,7 @@ class BaseController extends Controller
 
     /**
      * Error message
-     * @return type
+     * @return array
      */
     protected function validationErrorMessages() {
         return [

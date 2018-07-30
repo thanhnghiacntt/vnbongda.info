@@ -27,17 +27,18 @@ class PostController extends BaseController {
         parent::__construct($postRepository);
         $this->postRepository = $postRepository;
     }
-    
+
     /**
      * Create
-     * @param \App\Http\Controllers\Api\Request $request
-     * @return type
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function create(Request $request){
         try {
-            $reponse = $this->validateRequest($request, $this->ruleCreate(), $this->validationErrorMessages());
-            if(!is_null($reponse)){
-                return $reponse;
+            $response = $this->validateRequest($request, $this->ruleCreate(), $this->validationErrorMessages());
+            if(!is_null($response)){
+                return $response;
             }
             $credentials = $request->all();
             $attribute = $this->createdDetault($credentials);
@@ -52,7 +53,11 @@ class PostController extends BaseController {
     public function update(){
         
     }
-    
+
+    /**
+     * Delete
+     * @return \App\Notifications\type|\Illuminate\Http\JsonResponse
+     */
     public function delete(){
         try {
             $id = Input::get('id');

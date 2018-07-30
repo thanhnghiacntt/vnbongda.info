@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class ErrorHandle
+class ErrorHandleExceptions
 {
     /**
      * The names of the cookies that should not be encrypted.

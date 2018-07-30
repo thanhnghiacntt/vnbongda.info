@@ -40,15 +40,17 @@ class CategoryController extends BaseController {
         parent::__construct($categoryRepository);
         $this->categoryRepository = $categoryRepository;
     }
-    
+
     /**
-     * Created category
+     * Create category
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function create(Request $request){
         try {
-            $reponse = $this->validateRequest($request, $this->ruleCreate() , $this->validationErrorMessages());
-            if(!is_null($reponse)){
-                return $reponse;
+            $response = $this->validateRequest($request, $this->ruleCreate() , $this->validationErrorMessages());
+            if(!is_null($response)){
+                return $response;
             }
             $in = $request->all();
             if ($this->categoryRepository->checkExistSlug($in['slug'])) {
@@ -65,10 +67,26 @@ class CategoryController extends BaseController {
             return $this->responseJsonError('exception', null);
         }
     }
-    
+
+    /**
+     * Update
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(Request $request){
         try {
-            
+            $response = $this->validateRequest($request, $this->ruleUpdate() , $this->validationErrorMessages());
+            if(!is_null($response)){
+                return $response;
+            }
+            $in = $request->all();
+            $cat = $this->categoryRepository->findWithoutFail($in['id']);
+            if($cat == null){
+                $this->responseJsonError('id_incorrect', null);
+            }
+            $attribute = $this->createdDetault($in);
+            $category = $this->categoryRepository->create($attribute);
+            return $this->responseJsonSuccess(['category' => $category]);
         } catch (Exception $e) {
             Log::error($e);
             return $this->responseJsonError('exception', null);
@@ -76,7 +94,7 @@ class CategoryController extends BaseController {
     }
     
     /**
-     * Role create
+     * Rule create
      */
     protected function ruleCreate(){
         return ['slug' => 'required',
@@ -85,13 +103,25 @@ class CategoryController extends BaseController {
     }
     
     /**
+     * Rule update
+     */
+    protected function ruleUpdate(){
+        return [
+            'id' => 'required',
+            'slug' => 'required',
+            'name' => 'required'
+        ];
+    }
+    
+    /**
      * Error message
-     * @return type
+     * @return array
      */
     protected function validationErrorMessages() {
         return [
             'slug.required'         => 'slug_empty',
             'name.required'         => 'name_empty',
+            'id.required'           => 'id_empty'
         ];
     }
 }
