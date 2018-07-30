@@ -35,6 +35,7 @@ return [
     "url_not_found" => "Url không tìm thấy",
     "permission" => "Không được phép truy cập",
     "error_exception" => "Lỗi hệ thống",
-    "method_not_allowed" => "Phương thức không được phép truy cập"
+    "method_not_allowed" => "Phương thức không được phép truy cập",
+    "token_expired" => "Token đã hết hạn"
     ];
 
