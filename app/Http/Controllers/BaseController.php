@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Input;
 use App\Repositories\MyBaseRepository;
+use App\Notifications\ValidateMessage;
 use DateTime;
 use JWTAuth;
 
@@ -17,6 +18,8 @@ use JWTAuth;
 
 class BaseController extends Controller
 {
+    use ValidateMessage;
+    
     protected $repository;
     
     /**
@@ -39,15 +42,18 @@ class BaseController extends Controller
             return $this->responseJsonError('exception', null);
         }
     }
-    
-    public function update(Request $request){
-        
-    }
-    
-    public function delete(){
+
+    public function delete(Request $request){
         try {
+            $reponse = $this->validateRequest($request, $this->ruleDelete() , $this->validationErrorMessages());
+            if(!is_null($reponse)){
+                return $reponse;
+            }
             $id = Input::get('id');
             $entity = $this->repository->findWithoutFail($id);
+            if($entity == null){
+                return $this->responseJsonError('id_incorrect', null);
+            }
             $entity->deleted_at = new DateTime();
             $attribute = $this->updatedDetault($entity);
             $attribute->save();
@@ -58,8 +64,21 @@ class BaseController extends Controller
         }
     }
     
+    /**
+     * List record
+     * @param Request $request
+     * @return type
+     */
     public function listRecord(){
-        
+        try {
+            $page = Input::get('page');
+            $perPage = Input::get('per_page');
+            $records = $this->repository->listRecord($page, $perPage);
+            return $this->responseJsonSuccess($records);
+        } catch (Exception $ex) {
+            Log::error($ex);
+            return $this->responseJsonError('exception', null);
+        }
     }
     
     
@@ -133,5 +152,38 @@ class BaseController extends Controller
         $code = "success";
         $message = trans("error_message." . $code);
         return $this->responseJson($code, $message, $data);
+    }
+    
+    /**
+     * 
+     * @return type
+     */
+    protected function ruleList(){
+        return [
+            'page' => 'required',
+            'per_page' => 'required'
+        ];
+    }
+    
+    /**
+     * 
+     * @return type
+     */
+    protected function ruleDelete(){
+        return [
+            'id' => 'required'
+        ];
+    }
+
+    /**
+     * Error message
+     * @return type
+     */
+    protected function validationErrorMessages() {
+        return [
+            'page.required' => 'page_empty',
+            'per_page.required' => 'per_page_empty',
+            'id.required'    => 'id_empty'
+        ];
     }
 }

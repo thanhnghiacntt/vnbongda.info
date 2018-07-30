@@ -19,7 +19,7 @@ class CategoryPost extends MyBaseModel implements Transformable
     
     use SoftDeletes;
     
-    public $table = 'tbl_post';
+    public $table = 'tbl_category_post';
     
     use Notifiable;
     
