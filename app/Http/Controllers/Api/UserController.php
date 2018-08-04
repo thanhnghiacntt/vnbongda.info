@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Entities\User;
+use Illuminate\Http\JsonResponse;
 use JWTAuth;
 use Exception;
 use DateTime;
@@ -24,7 +26,7 @@ class UserController extends BaseController {
     use ValidateMessage;
     /**
      * User repository
-     * @var type 
+     * @var UserRepository
      */
     private $userRepository;
 
@@ -35,20 +37,20 @@ class UserController extends BaseController {
      */
     public function __construct(UserRepository $userRepository)
     {
-        $this->repository = $userRepository;
+        parent::__construct($userRepository);
         $this->userRepository = $userRepository;
     }
     
     /**
      * Create user
      * @param Request $request
-     * @return type
+     * @return JsonResponse
      */
     public function create(Request $request){
         try {
-            $reponse = $this->validateRequest($request, $this->ruleCreate(), $this->validationErrorMessages());
-            if(!is_null($reponse)){
-                return $reponse;
+            $response = $this->validateRequest($request, $this->ruleCreate(), $this->validationErrorMessages());
+            if(!is_null($response)){
+                return $response;
             }
             $credentials = $request->all();
             if($this->userRepository->checkExistEmail($credentials['email'])){
@@ -71,14 +73,42 @@ class UserController extends BaseController {
     }
     
     /**
+     * 
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function update(Request $request){
+        try {
+            $response = $this->validateRequest($request, $this->ruleUpdate(), $this->validationErrorMessages());
+            if(!is_null($response)){
+                return $response;
+            }
+            $credentials = $request->all();
+            $temp = $this->userRepository->findWithoutFail($credentials['id']);
+            if(is_null($temp)){
+                return $this->responseJsonError('id_incorrect', null);
+            }
+            $user = $this->setUser($temp, $credentials);
+            $user->save();
+            return $this->responseJsonSuccess(['user' => $user]);
+        } catch (JWTException $e) {
+            Log::error($e);
+            return $this->responseJsonError('could_not_create_token', null);
+        } catch (Exception $e) {
+            Log::error($e);
+            return $this->responseJsonError('exception', null);
+        }
+    }
+
+     /**
      * Login which input user, pass, type from form.
-     * @return type User
+     * @return JsonResponse
      */
     public function login(Request $request){
         try {
-            $reponse = $this->validateRequest($request, $this->rules(), $this->validationErrorMessages());
-            if(!is_null($reponse)){
-                return $reponse;
+            $response = $this->validateRequest($request, $this->rules(), $this->validationErrorMessages());
+            if(!is_null($response)){
+                return $response;
             }
             $credentials = $request->all();
             $token = JWTAuth::attempt($credentials);
@@ -98,16 +128,17 @@ class UserController extends BaseController {
             return $this->responseJsonError('exception', null);
         }
     }
-    
+
     /**
-     * Change password of user
+     * Change password user
      * @param Request $request
+     * @return JsonResponse
      */
     public function changPassword(Request $request){
          try {
-            $reponse = $this->validateRequest($request, $this->rulesChangePassword() , $this->validationErrorMessages());
-            if(!is_null($reponse)){
-                return $reponse;
+             $response = $this->validateRequest($request, $this->rulesChangePassword() , $this->validationErrorMessages());
+            if(!is_null($response)){
+                return $response;
             }
             // Get information from request
             $password = Input::get('old_password');
@@ -154,16 +185,30 @@ class UserController extends BaseController {
             'password' => 'required|min:6',];
     }
     
+    /**
+     * 
+     * @return array
+     */
     protected function ruleCreate(){
         return ['username' => 'required',
             'password' => 'required|min:6',
             'email' => 'required|email',
         ];
     }
+    
+    /**
+     * 
+     * @return array
+     */
+    protected function ruleUpdate(){
+        return [
+            'id' => 'required'
+        ];
+    }
 
         /**
      * Error message
-     * @return type
+     * @return array
      */
     protected function validationErrorMessages() {
         return [
@@ -177,13 +222,14 @@ class UserController extends BaseController {
             'new_password.min'          => 'new_password_min_6',
             'confirm_password.min'      => 'confirm_password_min_6',
             'email.required'            => 'email_empty',
-            'email.email'               => 'email_format'
+            'email.email'               => 'email_format',
+            'id.required'               => 'id_empty'
         ];
     }
     
     /**
      * Update user
-     * @param type $id
+     * @param string $id
      */
     private function updateDateUser($id){
         $user = $this->userRepository->findWithoutFail($id);
@@ -191,6 +237,29 @@ class UserController extends BaseController {
             $user->last_visited = new DateTime();
             $user->save();
         }
+    }
+    
+    /**
+     * Set user
+     * @param User $user
+     * @param User $credentials
+     * @return User
+     */
+    private function setUser($user, $credentials) {
+        if(array_key_exists('first_name', $credentials)){
+            $user->first_name = $credentials['first_name'];
+        }
+        if(array_key_exists('last_name', $credentials)){
+            $user->last_name = $credentials['last_name'];
+        }
+        if(array_key_exists('phone', $credentials) && $credentials->phone != null){
+            $user->phone = $credentials['phone'];
+        }
+        if(array_key_exists('avatar', $credentials) && $credentials->avatar != null){
+            $user->avatar = $credentials['avatar'];
+        }
+        $user->last_visited = new DateTime();
+        return $user;
     }
     
 }
