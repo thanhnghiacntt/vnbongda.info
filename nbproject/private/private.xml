@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/MyProject/PHP/vnbongda.info/resources/lang/vi/error_message.php</file>
+            <file>file:/D:/MyProject/PHP/vnbongda.info/app/Http/Controllers/Api/UserController.php</file>
+            <file>file:/D:/MyProject/PHP/vnbongda.info/app/Http/Controllers/BaseController.php</file>
+            <file>file:/D:/MyProject/PHP/vnbongda.info/app/Repositories/UserRepository.php</file>
+            <file>file:/D:/MyProject/PHP/vnbongda.info/app/Entities/User.php</file>
+            <file>file:/D:/MyProject/PHP/vnbongda.info/config/common.php</file>
+            <file>file:/D:/MyProject/PHP/vnbongda.info/routes/api.php</file>
+            <file>file:/D:/MyProject/PHP/vnbongda.info/app/Http/Controllers/Api/CategoryController.php</file>
+        </group>
+    </open-files>
 </project-private>
