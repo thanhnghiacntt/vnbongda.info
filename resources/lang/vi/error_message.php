@@ -38,6 +38,10 @@ return array(
     "error_exception" => "Lỗi hệ thống",
     "method_not_allowed" => "Phương thức không được phép truy cập",
     "token_expired" => "Token đã hết hạn",
-    "validate_exception" => "Lỗi khi validate"
+    "validate_exception" => "Lỗi khi validate",
+	"title_empty" => "Tiêu đề bị trống",
+    "image_empty" => "Tập tin hình ảnh bị trống",
+    "image_file_empty" => "Không có tập tin hình ảnh"
+    ];
 );
 

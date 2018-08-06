@@ -29,7 +29,7 @@ class CategoryPost extends MyBaseModel implements Transformable
      * @var array
      */
     protected $fillable = [
-        'title', 'content', 'id_image', 'created_by', 'updated_by'
+        'id_category', 'id_post', 'created_by', 'updated_by', 'created_at' , 'updated_at'
     ];
 
 }

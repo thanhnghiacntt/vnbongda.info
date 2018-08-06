@@ -4,6 +4,8 @@ namespace App\Entities;
 
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Gallery.
@@ -27,7 +29,21 @@ class Gallery extends MyBaseModel implements Transformable
      * @var array
      */
     protected $fillable = [
-        'image', 'title', 'created_by', 'updated_by'
+        'image', 'title', 'description', 'created_by', 'updated_by', 'created_at' , 'updated_at'
     ];
+
+
+    /**
+     * Get image
+     * @param $value
+     * @return string
+     */
+    public function getImageAttribute($value) {
+        $it = get_image($value);
+        if($it == null){
+            return asset(config("common.path_image_default"));
+        }
+        return $it;
+    }
 
 }

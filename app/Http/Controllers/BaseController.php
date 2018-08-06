@@ -99,13 +99,22 @@ class BaseController extends Controller
      * @return MyBaseModel
      */
     protected function createdDetault($entity){
-        $auth = JWTAuth::parseToken()->authenticate();
+        $auth = $this->getAuthen();
         if($auth != null){
-            $entity['created_by'] = $auth->id;
-            $entity['updated_by'] = $auth->id;
-            $entity['created_at'] = new DateTime();
-            $entity['updated_at'] = new DateTime();
-            $entity['id'] = null;
+            if(is_array($entity)){
+                $entity['created_by'] = $auth->id;
+                $entity['updated_by'] = $auth->id;
+                $entity['created_at'] = new DateTime();
+                $entity['updated_at'] = new DateTime();
+                $entity['id'] = null;
+            }else{
+                $entity->created_by = $auth->id;
+                $entity->updated_by = $auth->id;
+                $entity->created_at = new DateTime();
+                $entity->updated_at = new DateTime();
+                $entity->id = null;
+            }
+
         }
         return $entity;
     }
@@ -116,15 +125,28 @@ class BaseController extends Controller
      * @return MyBaseModel
      */
     protected function updatedDetault($entity){
-        $auth = JWTAuth::parseToken()->authenticate();
+        $auth = $this->getAuthen();
         if($auth != null){
-            $new = [
-                'updated_by' => $auth->id,
-                'updated_at' => new DateTime()
-            ];
-            array_push($entity, $new);
+            if(is_array($entity)){
+                $entity['updated_by'] = $auth->id;
+                $entity['updated_at'] = new DateTime();
+            }else{
+                $entity->updated_by = $auth->id;
+                $entity->updated_at = new DateTime();
+            }
         }
         return $entity;
+    }
+
+    /**
+     * @return null
+     */
+    private function getAuthen(){
+        try{
+            return JWTAuth::parseToken()->authenticate();
+        }catch (Exception $ex){
+            return null;
+        }
     }
 
     /**

@@ -29,7 +29,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password' , 'first_name', 'last_name', 'phone', 'avatar', 'last_visited'
+        'username', 'email', 'password' , 'first_name', 'last_name', 'phone', 'avatar', 'last_visited', 'created_by', 'updated_by', 'created_at' , 'updated_at'
     ];
 
     /**
@@ -38,14 +38,19 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'last_visited', 'deleted_at', 'created_by', 'updated_by', 'created_at', 'updated_at'
+        'password', 'remember_token', 'last_visited', 'deleted_at', 'created_by', 'updated_by', 'created_at' , 'updated_at'
     ];
 
+    /**
+     * Get avatar attribute
+     * @param $value
+     * @return string
+     */
     public function getAvatarAttribute($value) {
-        if($value != ""){
-            return asset(config("common.path_avatar") . $value);
-        }else{
+        $it = get_image($value);
+        if($it == null){
             return asset(config("common.path_avatar_default"));
         }
+        return $it;
     }
 }

@@ -7,6 +7,8 @@
  */
 
 return [
-    'path_avatar' => 'public/uploads/',
-    'path_avatar_default' => 'public/image/noavatar.jpg',
+    'image' => 'public/uploads/',
+    'path_avatar_default' => 'public/image/avatar.jpg',
+    'path_image_default' => 'public/image/image_default.jpg',
+    'image_default' => 'public/image/image.jpg'
 ];

@@ -16,14 +16,11 @@ namespace App\Http\Controllers\Api;
 
 use JWTAuth;
 use Exception;
-use DateTime;
 use App\Http\Controllers\BaseController;
 use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
 use App\Notifications\ValidateMessage;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends BaseController {
     
@@ -31,10 +28,14 @@ class CategoryController extends BaseController {
     
     /**
      * Category repository
-     * @var type 
+     * @var CategoryRepository
      */
     private $categoryRepository;
 
+    /**
+     * CategoryController constructor.
+     * @param CategoryRepository $categoryRepository
+     */
     public function __construct(CategoryRepository $categoryRepository)
     {
         parent::__construct($categoryRepository);
@@ -85,8 +86,21 @@ class CategoryController extends BaseController {
                 $this->responseJsonError('id_incorrect', null);
             }
             $attribute = $this->createdDetault($in);
-            $category = $this->categoryRepository->create($attribute);
-            return $this->responseJsonSuccess(['category' => $category]);
+            if(strcmp($cat->slug, $attribute['slug']) != 0){
+                if ($this->categoryRepository->checkExistSlug($attribute['slug'])) {
+                    return $this->responseJsonError('slug_exist');
+                }
+                $cat->slug = $attribute['slug'];
+            }
+            if(strcmp($cat->name, $attribute['name']) != 0){
+                if ($this->categoryRepository->checkExistSlug($attribute['name'])) {
+                    return $this->responseJsonError('name_exist');
+                }
+                $cat->name = $attribute['name'];
+            }
+            $cat->description = $attribute['description'];
+            $cat->save();
+            return $this->responseJsonSuccess(['category' => $cat]);
         } catch (Exception $e) {
             Log::error($e);
             return $this->responseJsonError('exception', null);

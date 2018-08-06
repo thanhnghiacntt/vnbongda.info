@@ -66,6 +66,7 @@ CREATE TABLE `tbl_gallery` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Khóa chính',
   `image` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Url image tương đối: VD /image/test.png',
   `title` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Title của image',
+  `description` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Description của image',
   `deleted_at` date DEFAULT NULL COMMENT 'Đã xóa hay chưa',
   `created_by` int(11) DEFAULT NULL COMMENT 'Tạo bởi user id nào',
   `updated_by` int(11) DEFAULT NULL COMMENT 'Cập nhật bởi user id nào',
