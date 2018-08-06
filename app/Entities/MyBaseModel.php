@@ -12,6 +12,8 @@ class MyBaseModel extends Model {
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
     protected $primaryKey = 'id';
+
+    public $delete_at;
     
     /**
      * The attributes that should be hidden for arrays.

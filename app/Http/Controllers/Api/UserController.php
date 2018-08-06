@@ -63,9 +63,6 @@ class UserController extends BaseController {
             $attribute['password'] = bcrypt($credentials['password']);     
             $user = $this->userRepository->create($attribute);
             return $this->responseJsonSuccess(['user' => $user]);
-        } catch (JWTException $e) {
-            Log::error($e);
-            return $this->responseJsonError('could_not_create_token', null);
         } catch (Exception $e) {
             Log::error($e);
             return $this->responseJsonError('exception', null);
@@ -91,17 +88,15 @@ class UserController extends BaseController {
             $user = $this->setUser($temp, $credentials);
             $user->save();
             return $this->responseJsonSuccess(['user' => $user]);
-        } catch (JWTException $e) {
-            Log::error($e);
-            return $this->responseJsonError('could_not_create_token', null);
         } catch (Exception $e) {
             Log::error($e);
             return $this->responseJsonError('exception', null);
         }
     }
 
-     /**
+    /**
      * Login which input user, pass, type from form.
+     * @param Request $request
      * @return JsonResponse
      */
     public function login(Request $request){
@@ -120,9 +115,6 @@ class UserController extends BaseController {
             $user = $this->userRepository->getProfile($auth->id);
             $this->updateDateUser($auth->id);
             return $this->responseJsonSuccess(['user' => $user, 'token'=> $token]);
-        } catch (JWTException $e) {
-            Log::error($e);
-            return $this->responseJsonError('could_not_create_token', null);
         } catch (Exception $e) {
             Log::error($e);
             return $this->responseJsonError('exception', null);
@@ -158,9 +150,6 @@ class UserController extends BaseController {
             $token = JWTAuth::attempt($credentials);
             $rs = $this->userRepository->getProfile($user->id);
             return $this->responseJsonSuccess(['user' => $rs, 'token'=> $token]);
-        } catch (JWTException $e) {
-            Log::error($e);
-            return $this->responseJsonError('could_not_create_token', null);
         } catch (Exception $e) {
             Log::error($e);
             return $this->responseJsonError('exception', null);

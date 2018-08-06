@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-return [
+return array(
     "invalid_credentials" => "Tên đăng nhập hoặc mật khẩu không đúng",
     "username_empty" => "Tên đăng nhập bị trống",
     "password_empty" => "Mật khẩu bị trống",
@@ -19,7 +19,6 @@ return [
     "email_empty" => "Email bị trống",
     "email_format" => "Email không đúng định dạng",
     "old_password_invalid" => "Mật khẩu cũ không đúng",
-    "could_not_create_token" => "Không thể tạo token",
     "exception" => "Lỗi hệ thống xin liên hệ quản lý để biết thêm",
     "could_not_create_token" => "Không thể tạo token",
     "username_exist" => "Tên đăng nhập đã tồn tại",
@@ -38,6 +37,7 @@ return [
     "permission" => "Không được phép truy cập",
     "error_exception" => "Lỗi hệ thống",
     "method_not_allowed" => "Phương thức không được phép truy cập",
-    "token_expired" => "Token đã hết hạn"
-    ];
+    "token_expired" => "Token đã hết hạn",
+    "validate_exception" => "Lỗi khi validate"
+);
 

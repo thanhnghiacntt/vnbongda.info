@@ -10,6 +10,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\BaseController;
 use App\Repositories\PostRepository;
+use Illuminate\Http\JsonResponse;
+
 /**
  * Description of PostController
  *
@@ -29,7 +31,6 @@ class PostController extends BaseController {
     }
 
     /**
-     * Create
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      * @throws \Prettus\Validator\Exceptions\ValidatorException
@@ -44,6 +45,9 @@ class PostController extends BaseController {
             $attribute = $this->createdDetault($credentials);
             $entity = $this->postRepository->create($attribute);
             return $this->responseJsonSuccess(['post' => $entity]);
+        } catch (ValidatorException $e){
+            Log::error($e);
+            return $this->responseJsonError('validate_exception', null);
         } catch (Exception $ex) {
             Log::error($ex);
             return $this->responseJsonError('exception', null);
@@ -56,7 +60,7 @@ class PostController extends BaseController {
 
     /**
      * Delete
-     * @return \App\Notifications\type|\Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function delete(){
         try {
@@ -78,7 +82,7 @@ class PostController extends BaseController {
     
     /**
      * Rule create
-     * @return type
+     * @return array
      */
     protected function ruleCreate(){
         return ['title' => 'required',
@@ -88,7 +92,7 @@ class PostController extends BaseController {
 
         /**
      * Error message
-     * @return type
+     * @return array
      */
     protected function validationErrorMessages() {
         return [

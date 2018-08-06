@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Entities\MyBaseModel;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Contracts\RepositoryInterface;
@@ -16,7 +17,7 @@ class MyBaseRepository extends BaseRepository implements RepositoryInterface
     /**
      * Specify Model class name
      *
-     * @return string
+     * @return array
      */
     public function model()
     {
@@ -35,7 +36,7 @@ class MyBaseRepository extends BaseRepository implements RepositoryInterface
      * Find without fail
      * @param type $id
      * @param type $columns
-     * @return type
+     * @return MyBaseModel
      */
     public function findWithoutFail($id, $columns = null){
         try{
