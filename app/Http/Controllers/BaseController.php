@@ -51,6 +51,23 @@ class BaseController extends Controller
     }
 
     /**
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getById(int $id){
+        try {
+            $entity = $this->repository->findWithoutFail($id);
+            if($entity == null){
+                return $this->responseJsonError('id_incorrect');
+            }
+            return $this->responseJsonSuccess($entity);
+        } catch (Exception $ex) {
+            Log::error($ex);
+            return $this->responseJsonError('exception', null);
+        }
+    }
+
+    /**
      * Delete
      * @param Request $request
      * @return \App\Notifications\type|JsonResponse
@@ -69,7 +86,7 @@ class BaseController extends Controller
             $entity->deleted_at = new DateTime();
             $attribute = $this->updatedDetault($entity);
             $attribute->save();
-            return $this->responseJsonSuccess(['entity' => $attribute]);
+            return $this->responseJsonSuccess($attribute);
         } catch (Exception $ex) {
             Log::error($ex);
             return $this->responseJsonError('exception', null);

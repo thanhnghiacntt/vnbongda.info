@@ -5,7 +5,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-return array(
+return [
     "invalid_credentials" => "Tên đăng nhập hoặc mật khẩu không đúng",
     "username_empty" => "Tên đăng nhập bị trống",
     "password_empty" => "Mật khẩu bị trống",
@@ -42,6 +42,5 @@ return array(
 	"title_empty" => "Tiêu đề bị trống",
     "image_empty" => "Tập tin hình ảnh bị trống",
     "image_file_empty" => "Không có tập tin hình ảnh"
-    ];
-);
+];
 

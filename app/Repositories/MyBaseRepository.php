@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Entities\MyBaseModel;
+use Exception;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Contracts\RepositoryInterface;

@@ -18,31 +18,34 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['namespace' => 'Api', null, 'middleware' => ['jwt.auth']], function () {
-    Route::post('change-password', 'UserController@changPassword');
-    Route::post('update-user','UserController@update');
-    Route::get('list-user', 'UserController@listRecord');
+    Route::post('user/change-password', 'UserController@changPassword');
+    Route::post('user/update','UserController@update');
+    Route::get('user/list', 'UserController@listRecord');
+    Route::get('user/{id}','UserController@getById');
     
-    
-    Route::post('create-category', 'CategoryController@create');
-    Route::post('update-category', 'CategoryController@update');
-    Route::delete('delete-category', 'CategoryController@delete');
+    Route::post('category/create', 'CategoryController@create');
+    Route::post('category/update', 'CategoryController@update');
+    Route::delete('category/delete', 'CategoryController@delete');
 
-    Route::post('upload-image', 'GalleryController@uploadFile');
-    Route::post('create-gallery', 'GalleryController@create');
-    Route::post('update-gallery', 'GalleryController@update');
-    Route::delete('delete-gallery', 'GalleryController@delete');
+    Route::post('gallery/upload-image', 'GalleryController@uploadFile');
+    Route::post('gallery/create', 'GalleryController@create');
+    Route::post('gallery/update', 'GalleryController@update');
+    Route::delete('gallery/delete', 'GalleryController@delete');
 
-    Route::post('create-post', 'PostController@create');
-    Route::post('update-post', 'PostController@update');
-    Route::delete('delete-post', 'PostController@delete');
+    Route::post('post/create', 'PostController@create');
+    Route::post('post/update', 'PostController@update');
+    Route::delete('post/delete', 'PostController@delete');
 });
 
 Route::group(['namespace' => 'Api', null], function () {
-    Route::post('login','UserController@login');
-    Route::post('create-user','UserController@create');
+    Route::post('user/login','UserController@login');
+    Route::post('user/create','UserController@create');
     
-    Route::get('list-category', 'CategoryController@listRecord');
-    Route::get('list-post', 'PostController@listRecord');
-    Route::get('list-gallery', 'GalleryController@listRecord');
-    Route::get('list-category', 'CategoryController@listRecord');
+    Route::get('category/list', 'CategoryController@listRecord');
+    Route::get('post/list', 'PostController@listRecord');
+    Route::get('gallery/list', 'GalleryController@listRecord');
+
+    Route::get('category/{id}','CategoryController@getById');
+    Route::get('gallery/{id}','GalleryController@getById');
+    Route::get('post/{id}','PostController@getById');
 });
