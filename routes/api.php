@@ -45,7 +45,11 @@ Route::group(['namespace' => 'Api', null], function () {
     Route::get('post/list', 'PostController@listRecord');
     Route::get('gallery/list', 'GalleryController@listRecord');
 
+
+    Route::get('category/children','CategoryController@children');
+
     Route::get('category/{id}','CategoryController@getById');
     Route::get('gallery/{id}','GalleryController@getById');
     Route::get('post/{id}','PostController@getById');
+
 });

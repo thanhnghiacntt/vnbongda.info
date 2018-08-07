@@ -70,6 +70,22 @@ class CategoryController extends BaseController {
     }
 
     /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function children(Request $request){
+        try {
+            $id = $request->get('id');
+            $cat = $this->categoryRepository->findWhere(['parent_id' => $id]);
+            return $this->responseJsonSuccess(['category' => $cat]);
+        } catch (Exception $e) {
+            Log::error($e);
+            return $this->responseJsonError('exception', null);
+        }
+    }
+
+
+    /**
      * Update
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
