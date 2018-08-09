@@ -113,7 +113,7 @@ class BaseController extends Controller
     /**
      * Created default
      * @param MyBaseModel $entity
-     * @return MyBaseModel
+     * @return MyBaseModel || array
      */
     protected function createdDetault($entity){
         $auth = $this->getAuthen();
@@ -139,7 +139,7 @@ class BaseController extends Controller
     /**
      * Update default
      * @param MyBaseModel $entity
-     * @return MyBaseModel
+     * @return MyBaseModel || array
      */
     protected function updatedDetault($entity){
         $auth = $this->getAuthen();

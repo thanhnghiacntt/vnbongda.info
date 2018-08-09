@@ -27,7 +27,7 @@ class UserRepository extends MyBaseRepository
      * @return type
      */
     public function getProfile($user_id, $relation = null) {
-        $columns = ['id', 'username', 'first_name', 'avatar', 'last_name', 'email', 'phone'];
+        $columns = ['id', 'username', 'first_name', 'role', 'avatar', 'last_name', 'email', 'phone'];
         return $this->find($user_id, $columns);
     }
     

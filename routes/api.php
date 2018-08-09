@@ -37,7 +37,7 @@ Route::group(['namespace' => 'Api', null, 'middleware' => ['jwt.auth']], functio
     Route::delete('post/delete', 'PostController@delete');
 });
 
-Route::group(['namespace' => 'Api', null], function () {
+Route::group(['namespace' => 'Api', 'middleware' => 'cors'], function () {
     Route::post('user/login','UserController@login');
     Route::post('user/create','UserController@create');
     

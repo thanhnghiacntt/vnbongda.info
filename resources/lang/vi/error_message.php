@@ -41,6 +41,7 @@ return [
     "validate_exception" => "Lỗi khi validate",
 	"title_empty" => "Tiêu đề bị trống",
     "image_empty" => "Tập tin hình ảnh bị trống",
-    "image_file_empty" => "Không có tập tin hình ảnh"
+    "image_file_empty" => "Không có tập tin hình ảnh",
+    "role_empty" => "Vai trò bị trống"
 ];
 

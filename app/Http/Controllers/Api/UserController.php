@@ -192,6 +192,7 @@ class UserController extends BaseController {
      */
     protected function ruleCreate(){
         return ['username' => 'required',
+            'role' => 'required',
             'password' => 'required|min:6',
             'email' => 'required|email',
         ];
@@ -224,7 +225,8 @@ class UserController extends BaseController {
             'confirm_password.min'      => 'confirm_password_min_6',
             'email.required'            => 'email_empty',
             'email.email'               => 'email_format',
-            'id.required'               => 'id_empty'
+            'id.required'               => 'id_empty',
+            'role.required'             => 'role_empty'
         ];
     }
     
@@ -258,6 +260,9 @@ class UserController extends BaseController {
         }
         if(array_key_exists('avatar', $credentials) && $credentials->avatar != null){
             $user->avatar = $credentials['avatar'];
+        }
+        if(array_key_exists('role', $credentials)){
+            $user->role = $credentials['role'];
         }
         $user->last_visited = new DateTime();
         return $user;
