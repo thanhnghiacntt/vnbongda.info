@@ -12,7 +12,6 @@ use App\Http\Controllers\BaseController;
 use App\Repositories\CategoryPostRepository;
 use App\Repositories\PostRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;

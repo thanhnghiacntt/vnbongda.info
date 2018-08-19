@@ -27,7 +27,7 @@ class ErrorHandleExceptions
     public function handle($request, Closure $next, $guard = null)
     {
         $response = $next($request);
-        if($response->original != null && is_array($response->original) && array_key_exists('error', $response->original)){
+        if(property_exists($response, 'original') && $response->original != null && is_array($response->original) && array_key_exists('error', $response->original)){
             return responseJsonError($response->original["error"]);
         }
 
