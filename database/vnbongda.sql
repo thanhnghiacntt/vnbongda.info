@@ -26,7 +26,7 @@ CREATE TABLE `tbl_category`  (
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'Tên danh mục',
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'Mô tả danh mục',
   `slug` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Slug',
-  `parent_id` int(11) NULL DEFAULT NULL COMMENT 'Id cha',
+  `parent_id` int(11) NULL DEFAULT 0 COMMENT 'Id cha',
   `order_by` int(11) NULL DEFAULT 0 COMMENT 'Order by',
   `deleted_at` date NULL DEFAULT NULL COMMENT 'Đã xóa hay chưa',
   `created_by` int(11) NULL DEFAULT NULL COMMENT 'Tạo bởi user id nào',

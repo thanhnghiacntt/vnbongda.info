@@ -51,6 +51,8 @@ Route::group(['namespace' => 'Api', 'middleware' => 'cors'], function () {
     Route::get('category/all', 'CategoryController@getAll');
     Route::get('gallery/all', 'GalleryController@getAll');
     
+    Route::get('category/parent/{parentId}','CategoryController@getByParentId');
+    
     Route::get('category/{id}','CategoryController@getById');
     Route::get('gallery/{id}','GalleryController@getById');
     Route::get('post/{id}','PostController@getById');
