@@ -137,6 +137,20 @@ class CategoryController extends BaseController {
     }
     
     /**
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getByParentId(int $parentId){
+        try {
+            $list = $this->categoryRepository->listCondition(['parent_id' => $parentId], null);
+            return $this->responseJsonSuccess($list);
+        } catch (Exception $ex) {
+            Log::error($ex);
+            return $this->responseJsonError('exception', null);
+        }
+    }
+    
+    /**
      * Rule create
      */
     protected function ruleCreate(){

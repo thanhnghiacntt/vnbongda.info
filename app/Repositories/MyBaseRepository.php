@@ -34,6 +34,17 @@ class MyBaseRepository extends BaseRepository implements RepositoryInterface
     }
     
     /**
+     * 
+     * @param type $where
+     * @param type $column
+     * @return array
+     */
+    public function listCondition($where, $column){
+        $this->model->where($where);
+        return $this->all($column);
+    }
+
+    /**
      * Find without fail
      * @param type $id
      * @param type $columns

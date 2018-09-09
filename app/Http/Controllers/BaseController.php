@@ -109,7 +109,22 @@ class BaseController extends Controller
         }
     }
     
+    /**
+     * Get all
+     * @return JsonResponse
+     */
+    public function getAll(){
+        try {
+            $records = $this->repository->all();
+            return $this->responseJsonSuccess($records);
+        } catch (Exception $ex) {
+            Log::error($ex);
+            return $this->responseJsonError('exception', null);
+        }
+    }
+
     
+
     /**
      * Created default
      * @param MyBaseModel $entity

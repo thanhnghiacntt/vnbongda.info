@@ -47,8 +47,12 @@ Route::group(['namespace' => 'Api', 'middleware' => 'cors'], function () {
 
 
     Route::get('category/children','CategoryController@children');
-    Route::get('category/all', 'CategoryController@all');
-
+    
+    Route::get('category/all', 'CategoryController@getAll');
+    Route::get('gallery/all', 'GalleryController@getAll');
+    
+    Route::get('category/parent/{parentId}','CategoryController@getByParentId');
+    
     Route::get('category/detail/{id}','CategoryController@getById');
     Route::get('gallery/detail/{id}','GalleryController@getById');
     Route::get('post/detail/{id}','PostController@getById');
