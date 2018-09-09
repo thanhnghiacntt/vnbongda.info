@@ -21,7 +21,7 @@ Route::group(['namespace' => 'Api', null, 'middleware' => ['jwt.auth']], functio
     Route::post('user/change-password', 'UserController@changPassword');
     Route::post('user/update','UserController@update');
     Route::get('user/list', 'UserController@listRecord');
-    Route::get('user/{id}','UserController@getById');
+    Route::get('user/detail/{id}','UserController@getById');
     
     Route::post('category/create', 'CategoryController@create');
     Route::post('category/update', 'CategoryController@update');
@@ -47,9 +47,10 @@ Route::group(['namespace' => 'Api', 'middleware' => 'cors'], function () {
 
 
     Route::get('category/children','CategoryController@children');
+    Route::get('category/all', 'CategoryController@all');
 
-    Route::get('category/{id}','CategoryController@getById');
-    Route::get('gallery/{id}','GalleryController@getById');
-    Route::get('post/{id}','PostController@getById');
+    Route::get('category/detail/{id}','CategoryController@getById');
+    Route::get('gallery/detail/{id}','GalleryController@getById');
+    Route::get('post/detail/{id}','PostController@getById');
 
 });

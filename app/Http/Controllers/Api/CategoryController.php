@@ -84,6 +84,19 @@ class CategoryController extends BaseController {
         }
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function all(){
+        try {
+            $cat = $this->categoryRepository->all();
+            return $this->responseJsonSuccess(['category' => $cat]);
+        } catch (Exception $e) {
+            Log::error($e);
+            return $this->responseJsonError('exception', null);
+        }
+    }
+
 
     /**
      * Update
